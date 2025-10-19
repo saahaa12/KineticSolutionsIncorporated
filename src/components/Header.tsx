@@ -71,9 +71,6 @@ const Header = () => {
             <a href="#contato" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
               CONTATO
             </a>
-            <a href="/apoiadores" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-              APOIADORES
-            </a>
           </nav>
         </div>
       </div>

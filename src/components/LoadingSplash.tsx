@@ -9,7 +9,7 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   useEffect(() => {
     // Start playing audio
     if (audioRef.current) {
-      audioRef.current.volume = 1;
+      audioRef.current.volume = 0.3;
       audioRef.current.play().catch(err => console.log("Audio autoplay prevented:", err));
     }
 
