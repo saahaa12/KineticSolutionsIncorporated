@@ -13,7 +13,7 @@ const EmpregoDecenteJovens = () => {
         <div className="container flex h-16 items-center">
           <Button 
             variant="ghost" 
-            onClick={() => navigate("/#hero-section")}
+            onClick={() => navigate("/")}
             className="gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
