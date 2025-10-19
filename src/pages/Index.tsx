@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoadingSplash from "@/components/LoadingSplash";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -11,7 +11,17 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  // Verifica se a splash já foi mostrada nesta sessão
+  const [isLoading, setIsLoading] = useState(() => {
+    return !sessionStorage.getItem('splashShown');
+  });
+
+  useEffect(() => {
+    // Marca que a splash foi mostrada
+    if (!isLoading) {
+      sessionStorage.setItem('splashShown', 'true');
+    }
+  }, [isLoading]);
 
   if (isLoading) {
     return <LoadingSplash onComplete={() => setIsLoading(false)} />;
