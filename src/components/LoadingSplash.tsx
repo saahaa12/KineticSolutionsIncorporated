@@ -4,19 +4,15 @@ import heroAudio from "@/assets/hero-background-audio.mp3";
 
 const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
-  const [started, setStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const handleStart = () => {
-    setStarted(true);
-    // Start playing audio after user interaction
+  useEffect(() => {
+    // Start playing audio immediately
     if (audioRef.current) {
       audioRef.current.volume = 0.3;
       audioRef.current.play().catch(err => console.log("Audio play error:", err));
     }
-  };
 
-  useEffect(() => {
     return () => {
       // Stop audio when component unmounts
       if (audioRef.current) {
@@ -35,8 +31,6 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   }, [progress]);
 
   useEffect(() => {
-    if (!started) return;
-
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -44,12 +38,12 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
           setTimeout(onComplete, 500);
           return 100;
         }
-        return prev + 0.3;
+        return prev + 2;
       });
-    }, 40);
+    }, 100);
 
     return () => clearInterval(interval);
-  }, [onComplete, started]);
+  }, [onComplete]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden">
@@ -159,35 +153,26 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
         </div>
 
         {/* Futuristic Progress Bar */}
-        {started ? (
-          <div className="w-full max-w-xs mx-auto space-y-3">
-            <div className="relative h-2 bg-muted/30 rounded-full overflow-hidden backdrop-blur-sm border border-primary/20">
-              <div
-                className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary/50 transition-all duration-300 ease-out"
-                style={{ 
-                  width: `${progress}%`,
-                  boxShadow: '0 0 20px hsl(var(--primary) / 0.8)'
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                style={{
-                  animation: 'shimmer 2s ease-in-out infinite'
-                }}
-              />
-            </div>
-            <div className="flex justify-between text-xs font-mono">
-              <span className="text-primary">{progress.toFixed(0)}%</span>
-              <span className="text-muted-foreground">LOADING</span>
-            </div>
+        <div className="w-full max-w-xs mx-auto space-y-3">
+          <div className="relative h-2 bg-muted/30 rounded-full overflow-hidden backdrop-blur-sm border border-primary/20">
+            <div
+              className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary/50 transition-all duration-300 ease-out"
+              style={{ 
+                width: `${progress}%`,
+                boxShadow: '0 0 20px hsl(var(--primary) / 0.8)'
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              style={{
+                animation: 'shimmer 2s ease-in-out infinite'
+              }}
+            />
           </div>
-        ) : (
-          <button
-            onClick={handleStart}
-            className="px-8 py-3 bg-primary/20 hover:bg-primary/30 border border-primary text-primary rounded-lg font-mono text-sm transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.5)]"
-          >
-            INICIAR EXPERIÊNCIA
-          </button>
-        )}
+          <div className="flex justify-between text-xs font-mono">
+            <span className="text-primary">{progress.toFixed(0)}%</span>
+            <span className="text-muted-foreground">LOADING</span>
+          </div>
+        </div>
       </div>
 
       <style>{`
