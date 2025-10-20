@@ -4,15 +4,19 @@ import heroAudio from "@/assets/hero-background-audio.mp3";
 
 const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
+  const [started, setStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    // Start playing audio
+  const handleStart = () => {
+    setStarted(true);
+    // Start playing audio after user interaction
     if (audioRef.current) {
       audioRef.current.volume = 0.3;
-      audioRef.current.play().catch(err => console.log("Audio autoplay prevented:", err));
+      audioRef.current.play().catch(err => console.log("Audio play error:", err));
     }
+  };
 
+  useEffect(() => {
     return () => {
       // Stop audio when component unmounts
       if (audioRef.current) {
@@ -31,6 +35,8 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   }, [progress]);
 
   useEffect(() => {
+    if (!started) return;
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -43,7 +49,7 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
     }, 40);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, [onComplete, started]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden">
@@ -132,7 +138,7 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
                 className="w-full h-full object-contain"
                 style={{
                   filter: 'drop-shadow(0 0 30px hsl(var(--primary) / 0.8)) drop-shadow(0 0 60px hsl(var(--primary) / 0.4))',
-                  animation: 'pulse-glow 2s ease-in-out infinite'
+                  animation: 'pulse-glow 2s ease-in-out infinite, sphere-rotate 10s linear infinite'
                 }}
               />
             </div>
@@ -153,26 +159,35 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
         </div>
 
         {/* Futuristic Progress Bar */}
-        <div className="w-full max-w-xs mx-auto space-y-3">
-          <div className="relative h-2 bg-muted/30 rounded-full overflow-hidden backdrop-blur-sm border border-primary/20">
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary/50 transition-all duration-300 ease-out"
-              style={{ 
-                width: `${progress}%`,
-                boxShadow: '0 0 20px hsl(var(--primary) / 0.8)'
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-              style={{
-                animation: 'shimmer 2s ease-in-out infinite'
-              }}
-            />
+        {started ? (
+          <div className="w-full max-w-xs mx-auto space-y-3">
+            <div className="relative h-2 bg-muted/30 rounded-full overflow-hidden backdrop-blur-sm border border-primary/20">
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary/50 transition-all duration-300 ease-out"
+                style={{ 
+                  width: `${progress}%`,
+                  boxShadow: '0 0 20px hsl(var(--primary) / 0.8)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                style={{
+                  animation: 'shimmer 2s ease-in-out infinite'
+                }}
+              />
+            </div>
+            <div className="flex justify-between text-xs font-mono">
+              <span className="text-primary">{progress.toFixed(0)}%</span>
+              <span className="text-muted-foreground">LOADING</span>
+            </div>
           </div>
-          <div className="flex justify-between text-xs font-mono">
-            <span className="text-primary">{progress.toFixed(0)}%</span>
-            <span className="text-muted-foreground">LOADING</span>
-          </div>
-        </div>
+        ) : (
+          <button
+            onClick={handleStart}
+            className="px-8 py-3 bg-primary/20 hover:bg-primary/30 border border-primary text-primary rounded-lg font-mono text-sm transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.5)]"
+          >
+            INICIAR EXPERIÊNCIA
+          </button>
+        )}
       </div>
 
       <style>{`
@@ -240,6 +255,14 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
           }
           50% {
             filter: drop-shadow(0 0 40px hsl(var(--primary) / 0.9)) drop-shadow(0 0 80px hsl(var(--primary) / 0.5));
+          }
+        }
+        @keyframes sphere-rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
       `}</style>
