@@ -4,15 +4,18 @@ import heroAudio from "@/assets/hero-background-audio.mp3";
 
 const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
+  const [audioEnabled, setAudioEnabled] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    // Start playing audio immediately
-    if (audioRef.current) {
+  const enableAudio = () => {
+    if (!audioEnabled && audioRef.current) {
       audioRef.current.volume = 0.3;
       audioRef.current.play().catch(err => console.log("Audio play error:", err));
+      setAudioEnabled(true);
     }
+  };
 
+  useEffect(() => {
     return () => {
       // Stop audio when component unmounts
       if (audioRef.current) {
@@ -46,11 +49,24 @@ const LoadingSplash = ({ onComplete }: { onComplete: () => void }) => {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden cursor-pointer"
+      onClick={enableAudio}
+    >
       {/* Background Audio */}
       <audio ref={audioRef} className="hidden">
         <source src={heroAudio} type="audio/mpeg" />
       </audio>
+
+      {/* Audio indicator */}
+      {!audioEnabled && (
+        <div className="absolute top-8 right-8 z-20 flex items-center gap-2 px-4 py-2 bg-background/50 backdrop-blur-sm border border-primary/30 rounded-lg animate-pulse">
+          <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+          <span className="text-xs text-muted-foreground font-mono">Clique para ativar som</span>
+        </div>
+      )}
       {/* Animated Grid Background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
