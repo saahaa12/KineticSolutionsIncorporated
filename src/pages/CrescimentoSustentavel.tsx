@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowLeft, TrendingUp, Leaf, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -5,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const CrescimentoSustentavel = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowLeft, Users, Heart, TrendingUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -5,6 +6,10 @@ import Footer from "@/components/Footer";
 
 const EmpregoDecenteJovens = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

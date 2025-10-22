@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Building2, Heart, Handshake, Award, ArrowLeft, Landmark, Globe2, Briefcase, Pickaxe } from "lucide-react";
@@ -7,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 const Apoiadores = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   const patrocinadores = [
     {

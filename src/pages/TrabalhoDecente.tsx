@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowLeft, Briefcase, Shield, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -5,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const TrabalhoDecente = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
