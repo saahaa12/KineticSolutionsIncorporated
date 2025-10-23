@@ -13,6 +13,7 @@ import ProgramaGlobalEmprego from "./pages/ProgramaGlobalEmprego";
 import EconomiaVerde from "./pages/EconomiaVerde";
 import EmpregoDecenteJovens from "./pages/EmpregoDecenteJovens";
 import Apoiadores from "./pages/Apoiadores";
+import Vagas from "./pages/Vagas";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/economia-verde" element={<EconomiaVerde />} />
           <Route path="/emprego-decente-jovens" element={<EmpregoDecenteJovens />} />
           <Route path="/apoiadores" element={<Apoiadores />} />
+          <Route path="/vagas" element={<Vagas />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
